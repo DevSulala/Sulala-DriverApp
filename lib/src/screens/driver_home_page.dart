@@ -53,9 +53,24 @@ class _DriverHomePageState extends ConsumerState<DriverHomePage>
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Text(
-          'Sulala Orders'.tr,
-          style: AppFonts.title3(color: AppColors.grayscale90),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: MediaQuery.of(context).size.width * 0.047,
+              backgroundImage: const AssetImage(
+                'assets/Marketplace/sulala_only_logo.png',
+              ),
+            ),
+            const SizedBox(
+              width: 2,
+            ),
+            Text(
+              'Sulala Orders'.tr,
+              style: AppFonts.title3(color: AppColors.grayscale90),
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -109,40 +124,45 @@ class _DriverHomePageState extends ConsumerState<DriverHomePage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.029,
+              height: MediaQuery.of(context).size.height * 0.020,
             ),
 
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 9, vertical: 10),
               height: 45,
               decoration: BoxDecoration(
                 color: AppColors.grayscale10,
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: TabBar(
-                controller: _tabController,
-                indicator: BoxDecoration(
-                  color: AppColors.primary50,
-                  borderRadius: BorderRadius.circular(24),
+              child: Material(
+                color: AppColors.grayscale10,
+                borderRadius: BorderRadius.circular(50),
+                elevation: 2,
+                child: TabBar(
+                  controller: _tabController,
+                  indicator: BoxDecoration(
+                    color: AppColors.primary50,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  dividerColor: Colors.transparent,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: Colors.transparent,
+                  labelColor: AppColors.grayscale0,
+                  unselectedLabelColor: AppColors.grayscale60,
+                  labelStyle: AppFonts.body2(color: AppColors.grayscale0),
+                  tabs: const [
+                    Tab(
+                      text: 'New Orders',
+                    ),
+                    Tab(
+                      text: 'Accepted',
+                    ),
+                    Tab(
+                      text: 'Delivered',
+                    ),
+                  ],
                 ),
-                dividerColor: Colors.transparent,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicatorColor: Colors.transparent,
-                labelColor: AppColors.grayscale0,
-                unselectedLabelColor: AppColors.grayscale60,
-                labelStyle: AppFonts.body2(color: AppColors.grayscale0),
-                tabs: const [
-                  Tab(
-                    text: 'New Orders',
-                  ),
-                  Tab(
-                    text: 'Accepted',
-                  ),
-                  Tab(
-                    text: 'Delivered',
-                  ),
-                ],
               ),
             ),
 
