@@ -12,6 +12,10 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
 
 def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
 if (flutterVersionCode == null) {
@@ -23,16 +27,25 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+
 android {
     namespace = "com.example.sulala_driver_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+ 
+    
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.sulala_driver_app"
@@ -42,6 +55,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        minSdkVersion flutter.minSdkVersion
     }
 
     buildTypes {
@@ -55,4 +69,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
