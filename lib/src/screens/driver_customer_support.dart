@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';
 
-import 'data/colors.dart';
+import '../data/colors.dart';
 import 'data/fonts.dart';
 
 class ChatPage extends StatelessWidget {

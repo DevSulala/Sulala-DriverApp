@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../data/colors.dart';
+
+import '../../data/colors.dart';
 import '../data/fonts.dart';
 
 class DriverOrderStatusChip extends StatelessWidget {

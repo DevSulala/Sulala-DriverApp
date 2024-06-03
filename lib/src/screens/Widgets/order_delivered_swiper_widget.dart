@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:slide_action/slide_action.dart';
 
-import '../data/colors.dart';
+
+import '../../data/colors.dart';
 import '../data/fonts.dart';
 
 class OrderDeliveredSwiper extends StatefulWidget {

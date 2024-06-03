@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+import '../../data/colors.dart';
 import '../../data/dummy_data.dart';
 
-import '../data/colors.dart';
+
 import '../data/fonts.dart';
 import 'time_slot_widget.dart';
 

@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 
+import '../../data/colors.dart';
 import '../../data/dummy_data.dart';
 
 import '../Widgets/driver_cart_items_card_widget.dart';
 import '../Widgets/driver_order_delivery_time_staus_widget.dart';
-import '../data/colors.dart';
+
 import '../data/fonts.dart';
 
 class DriverDeliveredOrdersDetails extends StatefulWidget {

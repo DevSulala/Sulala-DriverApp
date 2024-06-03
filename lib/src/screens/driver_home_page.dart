@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/colors.dart';
 import 'DriverAcceptedOrders/driver_accepted_orders.dart';
 import 'DriverDeliveredOrders/driver_delivered_orders.dart';
 import 'DriverNewOrders/driver_new_orders.dart';
 import 'Widgets/driver_accounts_modal.dart';
-import 'data/colors.dart';
+
 import 'data/fonts.dart';
 import 'package:get/get.dart';
 
