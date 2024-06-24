@@ -372,7 +372,6 @@ class OrderDetailsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 AssignDriverSwiper(),
-                SizedBox(height: 10),
               ],
             ),
           ),

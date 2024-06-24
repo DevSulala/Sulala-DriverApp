@@ -1,9 +1,7 @@
 // ignore_for_file: use_super_parameters, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-
 import 'package:slide_action/slide_action.dart';
-
 
 import '../../data/colors.dart';
 import '../data/fonts.dart';
@@ -19,6 +17,132 @@ class OrderDeliveredSwiper extends StatefulWidget {
 
 class _OrderDeliveredSwiperState extends State<OrderDeliveredSwiper> {
   bool _swipeCompleted = false;
+  bool _cashReceived = false;
+  bool _packageIntact = false;
+
+  void _showConfirmationDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        bool tempCashReceived = _cashReceived;
+        bool tempPackageIntact = _packageIntact;
+
+        return AlertDialog(
+          backgroundColor: AppColors.grayscale0,
+          title: Text(
+            'Confirm Delivery',
+            style: AppFonts.title4(color: AppColors.grayscale90),
+          ),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        tempCashReceived = !tempCashReceived;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Cash Received',
+                          style:
+                              AppFonts.headline4(color: AppColors.grayscale90),
+                        ),
+                        const Spacer(),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.064,
+                          height: MediaQuery.of(context).size.width * 0.064,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: tempCashReceived
+                                  ? AppColors.primary20
+                                  : AppColors.grayscale30,
+                              width: tempCashReceived ? 6.0 : 1.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        tempPackageIntact = !tempPackageIntact;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Package Intact',
+                          style:
+                              AppFonts.headline4(color: AppColors.grayscale90),
+                        ),
+                        const Spacer(),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.064,
+                          height: MediaQuery.of(context).size.width * 0.064,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: tempPackageIntact
+                                  ? AppColors.primary20
+                                  : AppColors.grayscale30,
+                              width: tempPackageIntact ? 6.0 : 1.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Cancel',
+                style: AppFonts.headline4(color: AppColors.error100),
+              ),
+              onPressed: () {
+                setState(() {
+                  _swipeCompleted = false;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: AppColors.primary40,
+                // padding:
+                //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+              child: Text(
+                'Confirm',
+                style: AppFonts.body1(color: AppColors.grayscale00),
+              ),
+              onPressed: () {
+                setState(() {
+                  _cashReceived = tempCashReceived;
+                  _packageIntact = tempPackageIntact;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +154,20 @@ class _OrderDeliveredSwiperState extends State<OrderDeliveredSwiper> {
                 elevation: 0,
                 backgroundColor: AppColors.grayscale20,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                    const EdgeInsets.symmetric(vertical: 9, horizontal: 24),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
               ),
               child: Text(
-                'Assigned To Me',
+                'Order Delivered',
                 style: AppFonts.body1(color: AppColors.grayscale90),
               ),
             ),
           )
         : SlideAction(
             thumbHitTestBehavior: HitTestBehavior.translucent,
-            trackHeight: 65,
+            trackHeight: 55,
             trackBuilder: (context, state) {
               return Container(
                 decoration: BoxDecoration(
@@ -58,7 +182,7 @@ class _OrderDeliveredSwiperState extends State<OrderDeliveredSwiper> {
                 ),
                 child: Center(
                   child: Text(
-                    "Assign To Me",
+                    'Order Delivered',
                     style: AppFonts.body1(color: AppColors.grayscale0),
                   ),
                 ),
@@ -83,7 +207,7 @@ class _OrderDeliveredSwiperState extends State<OrderDeliveredSwiper> {
               setState(() {
                 _swipeCompleted = true;
               });
-              debugPrint("Hello World");
+              _showConfirmationDialog();
             },
           );
   }

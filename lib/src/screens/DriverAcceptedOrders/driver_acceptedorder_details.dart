@@ -6,6 +6,7 @@ import '../../data/dummy_data.dart';
 import '../Widgets/driver_cart_items_card_widget.dart';
 import '../Widgets/driver_order_delivery_time_staus_widget.dart';
 
+import '../Widgets/order_delivered_swiper_widget.dart';
 import '../data/fonts.dart';
 // Import your order model if needed
 
@@ -106,19 +107,19 @@ class _DriverAcceptedOrderDetailsState
                           children: [
                             Text(
                               'Delivery',
-                              style: AppFonts.title5(
+                              style: AppFonts.headline3(
                                 color: AppColors.grayscale90,
                               ),
                             ),
                             Text(
                               'Time: ${widget.order.deliveryslot}',
-                              style: AppFonts.title5(
+                              style: AppFonts.headline3(
                                 color: AppColors.grayscale70,
                               ),
                             ),
                             Text(
                               widget.order.deliverydate,
-                              style: AppFonts.title5(
+                              style: AppFonts.headline3(
                                 color: AppColors.grayscale70,
                               ),
                             ),
@@ -130,7 +131,7 @@ class _DriverAcceptedOrderDetailsState
                           children: [
                             Text(
                               'Remaining Time',
-                              style: AppFonts.title5(
+                              style: AppFonts.headline3(
                                 color: AppColors.grayscale90,
                               ),
                             ),
@@ -144,7 +145,7 @@ class _DriverAcceptedOrderDetailsState
                                 const SizedBox(width: 5),
                                 Text(
                                   '00:10:39',
-                                  style: AppFonts.title5(
+                                  style: AppFonts.headline3(
                                     color: AppColors.grayscale70,
                                   ),
                                 ),
@@ -160,7 +161,105 @@ class _DriverAcceptedOrderDetailsState
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
+                ),
+                Text(
+                  'Pick Up From Shop',
+                  style: AppFonts.title5(color: AppColors.grayscale70),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    border: Border.all(color: AppColors.grayscale20),
+                    color: AppColors.grayscale00,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: AppColors.primary20),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      widget.order.shopname,
+                                      style: AppFonts.headline3(
+                                          color: AppColors.grayscale90),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on_outlined,
+                                      size: 20,
+                                      color: AppColors.grayscale60,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      widget.order.shopaddress,
+                                      style: AppFonts.headline4(
+                                          color: AppColors.grayscale60),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {},
+                              child: Chip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Adjust the radius as needed
+                                  side: const BorderSide(
+                                      color: Colors
+                                          .transparent), // Make outline transparent
+                                ),
+                                backgroundColor: AppColors.primary40,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ), // Adjust padding as needed
+                                label: Text(
+                                  'Map Directions',
+                                  style: AppFonts.caption1(
+                                    color: AppColors
+                                        .grayscale00, // Set font color based on status
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Delivery Details',
+                  style: AppFonts.title5(color: AppColors.grayscale70),
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -209,23 +308,26 @@ class _DriverAcceptedOrderDetailsState
                                   color: AppColors.grayscale60),
                             ),
                             const Spacer(),
-                            Chip(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    20), // Adjust the radius as needed
-                                side: const BorderSide(
-                                    color: Colors
-                                        .transparent), // Make outline transparent
-                              ),
-                              backgroundColor: AppColors.primary40,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 25,
-                              ), // Adjust padding as needed
-                              label: Text(
-                                'Call',
-                                style: AppFonts.caption1(
-                                  color: AppColors
-                                      .grayscale00, // Set font color based on status
+                            InkWell(
+                              onTap: () {},
+                              child: Chip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Adjust the radius as needed
+                                  side: const BorderSide(
+                                      color: Colors
+                                          .transparent), // Make outline transparent
+                                ),
+                                backgroundColor: AppColors.primary40,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                ), // Adjust padding as needed
+                                label: Text(
+                                  'Call',
+                                  style: AppFonts.caption1(
+                                    color: AppColors
+                                        .grayscale00, // Set font color based on status
+                                  ),
                                 ),
                               ),
                             ),
@@ -262,22 +364,50 @@ class _DriverAcceptedOrderDetailsState
                         ),
                         const SizedBox(height: 10),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.home,
-                              size: 20,
-                              color: AppColors.grayscale60,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.home,
+                                  size: 20,
+                                  color: AppColors.grayscale60,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  widget.order.customeraddress,
+                                  style: AppFonts.headline4(
+                                      color: AppColors.grayscale60),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 5),
-                            Text(
-                              widget.order.customeraddress,
-                              style: AppFonts.headline4(
-                                  color: AppColors.grayscale60),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {},
+                              child: Chip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Adjust the radius as needed
+                                  side: const BorderSide(
+                                      color: Colors
+                                          .transparent), // Make outline transparent
+                                ),
+                                backgroundColor: AppColors.primary40,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ), // Adjust padding as needed
+                                label: Text(
+                                  'Map Directions',
+                                  style: AppFonts.caption1(
+                                    color: AppColors
+                                        .grayscale00, // Set font color based on status
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        // const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -374,49 +504,13 @@ class _DriverAcceptedOrderDetailsState
             border: Border.all(color: AppColors.grayscale20),
             color: AppColors.grayscale00,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: AppColors.secondary50,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 24),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Text(
-                      'Delivered',
-                      style: AppFonts.body1(color: AppColors.grayscale90),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: AppColors.primary40,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 24),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Text(
-                      'Start Maps',
-                      style: AppFonts.body1(color: AppColors.grayscale0),
-                    ),
-                  ),
-                ),
+                OrderDeliveredSwiper(),
               ],
             ),
           ),

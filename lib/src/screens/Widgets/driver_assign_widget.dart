@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:slide_action/slide_action.dart';
 
-
 import '../../data/colors.dart';
 import '../data/fonts.dart';
 
@@ -29,7 +28,7 @@ class _AssignDriverSwiperState extends State<AssignDriverSwiper> {
                 elevation: 0,
                 backgroundColor: AppColors.grayscale20,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
@@ -42,7 +41,7 @@ class _AssignDriverSwiperState extends State<AssignDriverSwiper> {
           )
         : SlideAction(
             thumbHitTestBehavior: HitTestBehavior.translucent,
-            trackHeight: 65,
+            trackHeight: 55,
             trackBuilder: (context, state) {
               return Container(
                 decoration: BoxDecoration(
@@ -65,7 +64,7 @@ class _AssignDriverSwiperState extends State<AssignDriverSwiper> {
             },
             thumbBuilder: (context, state) {
               return Container(
-                margin: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: AppColors.grayscale0,
                   borderRadius: BorderRadius.circular(50),
