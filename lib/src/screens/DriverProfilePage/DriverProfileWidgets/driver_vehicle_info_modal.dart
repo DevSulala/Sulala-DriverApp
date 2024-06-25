@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/colors.dart';
+import '../../data/fonts.dart';
+
 class VehicleInfoModal extends StatefulWidget {
   final String selectedVehicle;
   final String registrationNumber;
   final List<String> vehicles;
   final Function(String, String) onSave;
 
-  const VehicleInfoModal({super.key, 
+  const VehicleInfoModal({
+    super.key,
     required this.selectedVehicle,
     required this.registrationNumber,
     required this.vehicles,
@@ -17,9 +21,16 @@ class VehicleInfoModal extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _VehicleInfoModalState createState() => _VehicleInfoModalState();
 
-  static void show(BuildContext context, String selectedVehicle, String registrationNumber, List<String> vehicles, Function(String, String) onSave) {
+  static void show(
+      BuildContext context,
+      String selectedVehicle,
+      String registrationNumber,
+      List<String> vehicles,
+      Function(String, String) onSave) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.grayscale00,
+      showDragHandle: true,
       isScrollControlled: true,
       builder: (context) {
         return VehicleInfoModal(
@@ -41,7 +52,8 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
   void initState() {
     super.initState();
     _selectedVehicle = widget.selectedVehicle;
-    _registrationController = TextEditingController(text: widget.registrationNumber);
+    _registrationController =
+        TextEditingController(text: widget.registrationNumber);
   }
 
   @override
@@ -63,56 +75,107 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Vehicle Information',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: AppFonts.title4(color: AppColors.grayscale90),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Select Vehicle',
+                style: AppFonts.caption1(color: AppColors.grayscale70),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary40, // Outline color
+                  ),
+                  color: Colors.white, // Background color
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: AppColors.grayscale00,
+                  value: _selectedVehicle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  items: widget.vehicles.map((vehicle) {
+                    return DropdownMenuItem<String>(
+                      value: vehicle,
+                      child: Text(
+                        vehicle,
+                        style: AppFonts.headline4(color: AppColors.grayscale70),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedVehicle = value!;
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: _selectedVehicle,
-                decoration: const InputDecoration(
-                  labelText: 'Select Vehicle',
-                ),
-                items: widget.vehicles.map((vehicle) {
-                  return DropdownMenuItem<String>(
-                    value: vehicle,
-                    child: Text(vehicle),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedVehicle = value!;
-                  });
-                },
+              Text(
+                'Registration Number',
+                style: AppFonts.caption2(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _registrationController,
-                decoration: const InputDecoration(
-                  labelText: 'Registration Number',
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary30, // Outline color
+                  ),
+                  color: Colors.white, // Background color
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    // No need to call setState for controller's text change
-                  });
-                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: _registrationController,
+                    style: AppFonts.headline4(color: AppColors.grayscale70),
+                    decoration: InputDecoration(
+                      hintStyle: AppFonts.body1(color: AppColors.grayscale50),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: AppFonts.headline4(color: AppColors.error100),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: AppColors.primary40,
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     onPressed: () {
-                      widget.onSave(_selectedVehicle, _registrationController.text);
+                      widget.onSave(
+                          _selectedVehicle, _registrationController.text);
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: AppFonts.body1(color: AppColors.grayscale00),
+                    ),
                   ),
                 ],
               ),

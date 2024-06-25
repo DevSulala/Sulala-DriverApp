@@ -222,7 +222,7 @@ class _DriverProfilePageState extends State<DriverProfilePage> {
                         color: AppColors.primary30,
                       ),
                       onTap: () {
-                        ScheduleModal.show(
+                        AvailabilityModal.show(
                           context,
                           _selectedTimeSlot,
                           _timeSlots,

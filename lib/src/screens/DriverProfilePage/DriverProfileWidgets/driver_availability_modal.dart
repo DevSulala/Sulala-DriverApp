@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sulala_driver_app/src/data/colors.dart';
 
-class ScheduleModal extends StatefulWidget {
+import '../../data/fonts.dart';
+
+class AvailabilityModal extends StatefulWidget {
   final String selectedTimeSlot;
   final List<String> timeSlots;
   final Function(String, String) onSave;
 
-  const ScheduleModal({super.key, 
+  const AvailabilityModal({
+    super.key,
     required this.selectedTimeSlot,
     required this.timeSlots,
     required this.onSave,
@@ -13,14 +17,17 @@ class ScheduleModal extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _ScheduleModalState createState() => _ScheduleModalState();
+  _AvailabilityModalState createState() => _AvailabilityModalState();
 
-  static void show(BuildContext context, String selectedTimeSlot, List<String> timeSlots, Function(String, String) onSave) {
+  static void show(BuildContext context, String selectedTimeSlot,
+      List<String> timeSlots, Function(String, String) onSave) {
     showModalBottomSheet(
+      backgroundColor: AppColors.grayscale00,
+      showDragHandle: true,
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return ScheduleModal(
+        return AvailabilityModal(
           selectedTimeSlot: selectedTimeSlot,
           timeSlots: timeSlots,
           onSave: onSave,
@@ -30,7 +37,7 @@ class ScheduleModal extends StatefulWidget {
   }
 }
 
-class _ScheduleModalState extends State<ScheduleModal> {
+class _AvailabilityModalState extends State<AvailabilityModal> {
   late String _selectedTimeSlot;
 
   @override
@@ -52,45 +59,78 @@ class _ScheduleModalState extends State<ScheduleModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Set Availability',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                'Select Your Shift',
+                style: AppFonts.title4(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: _selectedTimeSlot,
-                decoration: const InputDecoration(
-                  labelText: 'Select Time Slot',
+              const SizedBox(height: 25),
+              Text(
+                'Shift Timings',
+                style: AppFonts.headline4(color: AppColors.grayscale70),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary40, // Outline color
+                  ),
+                  color: Colors.white, // Background color
                 ),
-                items: widget.timeSlots.map((slot) {
-                  return DropdownMenuItem<String>(
-                    value: slot,
-                    child: Text(slot),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedTimeSlot = value!;
-                    _updateCurrentStatus();
-                  });
-                },
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: AppColors.grayscale00,
+                  value: _selectedTimeSlot,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  items: widget.timeSlots.map((slot) {
+                    return DropdownMenuItem<String>(
+                      value: slot,
+                      child: Text(
+                        slot,
+                        style: AppFonts.headline4(color: AppColors.grayscale70),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedTimeSlot = value!;
+                      _updateCurrentStatus();
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: AppFonts.headline4(color: AppColors.error100),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: AppColors.primary40,
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     onPressed: () {
                       widget.onSave(_selectedTimeSlot, _currentStatus());
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: AppFonts.body1(color: AppColors.grayscale00),
+                    ),
                   ),
                 ],
               ),

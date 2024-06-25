@@ -2,12 +2,16 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../data/colors.dart';
+import '../../data/fonts.dart';
+
 class LanguageAndRegionModal extends StatefulWidget {
   final String selectedLanguage;
   final List<String> languages;
   final Function(String) onSave;
 
-  const LanguageAndRegionModal({super.key, 
+  const LanguageAndRegionModal({
+    super.key,
     required this.selectedLanguage,
     required this.languages,
     required this.onSave,
@@ -16,9 +20,12 @@ class LanguageAndRegionModal extends StatefulWidget {
   @override
   _LanguageAndRegionModalState createState() => _LanguageAndRegionModalState();
 
-  static void show(BuildContext context, String selectedLanguage, List<String> languages, Function(String) onSave) {
+  static void show(BuildContext context, String selectedLanguage,
+      List<String> languages, Function(String) onSave) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.grayscale00,
+      showDragHandle: true,
       isScrollControlled: true,
       builder: (context) {
         return LanguageAndRegionModal(
@@ -53,44 +60,77 @@ class _LanguageAndRegionModalState extends State<LanguageAndRegionModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Language and Region',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                'Language',
+                style: AppFonts.title4(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: _selectedLanguage,
-                decoration: const InputDecoration(
-                  labelText: 'Select Language',
+              const SizedBox(height: 25),
+              Text(
+                'Select Language',
+                style: AppFonts.headline4(color: AppColors.grayscale70),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary40, // Outline color
+                  ),
+                  color: Colors.white, // Background color
                 ),
-                items: widget.languages.map((language) {
-                  return DropdownMenuItem<String>(
-                    value: language,
-                    child: Text(language),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLanguage = value!;
-                  });
-                },
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: DropdownButtonFormField<String>(
+                  dropdownColor: AppColors.grayscale00,
+                  value: _selectedLanguage,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  items: widget.languages.map((language) {
+                    return DropdownMenuItem<String>(
+                      value: language,
+                      child: Text(
+                        language,
+                        style: AppFonts.headline4(color: AppColors.grayscale90),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedLanguage = value!;
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: AppFonts.headline4(color: AppColors.error100),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: AppColors.primary40,
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     onPressed: () {
                       widget.onSave(_selectedLanguage);
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: AppFonts.body1(color: AppColors.grayscale00),
+                    ),
                   ),
                 ],
               ),

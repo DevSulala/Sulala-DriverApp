@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/colors.dart';
+import '../../data/fonts.dart';
+
 class NotificationPreferencesModal extends StatefulWidget {
   final bool newOrders;
   final bool sameLocationOrders;
@@ -7,7 +10,8 @@ class NotificationPreferencesModal extends StatefulWidget {
   final bool muteAll;
   final Function(bool, bool, bool, bool) onSave;
 
-  const NotificationPreferencesModal({super.key, 
+  const NotificationPreferencesModal({
+    super.key,
     required this.newOrders,
     required this.sameLocationOrders,
     required this.reviewReceived,
@@ -17,10 +21,19 @@ class NotificationPreferencesModal extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _NotificationPreferencesModalState createState() => _NotificationPreferencesModalState();
+  _NotificationPreferencesModalState createState() =>
+      _NotificationPreferencesModalState();
 
-  static void show(BuildContext context, bool newOrders, bool sameLocationOrders, bool reviewReceived, bool muteAll, Function(bool, bool, bool, bool) onSave) {
+  static void show(
+      BuildContext context,
+      bool newOrders,
+      bool sameLocationOrders,
+      bool reviewReceived,
+      bool muteAll,
+      Function(bool, bool, bool, bool) onSave) {
     showModalBottomSheet(
+      showDragHandle: true,
+      backgroundColor: AppColors.grayscale00,
       context: context,
       isScrollControlled: true,
       builder: (context) {
@@ -36,7 +49,8 @@ class NotificationPreferencesModal extends StatefulWidget {
   }
 }
 
-class _NotificationPreferencesModalState extends State<NotificationPreferencesModal> {
+class _NotificationPreferencesModalState
+    extends State<NotificationPreferencesModal> {
   late bool _newOrders;
   late bool _sameLocationOrders;
   late bool _reviewReceived;
@@ -64,41 +78,21 @@ class _NotificationPreferencesModalState extends State<NotificationPreferencesMo
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Notification Preferences',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: AppFonts.title4(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               SwitchListTile(
-                title: const Text('New Orders'),
-                value: _newOrders,
-                onChanged: (value) {
-                  setState(() {
-                    _newOrders = value;
-                  });
-                },
-              ),
-              SwitchListTile(
-                title: const Text('Same Location Orders'),
-                value: _sameLocationOrders,
-                onChanged: (value) {
-                  setState(() {
-                    _sameLocationOrders = value;
-                  });
-                },
-              ),
-              SwitchListTile(
-                title: const Text('Review Received'),
-                value: _reviewReceived,
-                onChanged: (value) {
-                  setState(() {
-                    _reviewReceived = value;
-                  });
-                },
-              ),
-              SwitchListTile(
-                title: const Text('Mute All'),
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  'Mute All',
+                  style: AppFonts.headline4(color: AppColors.grayscale90),
+                ),
                 value: _muteAll,
+                activeColor: AppColors.grayscale00,
+                inactiveTrackColor: AppColors.grayscale10,
+                activeTrackColor: AppColors.primary30,
                 onChanged: (value) {
                   setState(() {
                     _muteAll = value;
@@ -110,22 +104,86 @@ class _NotificationPreferencesModalState extends State<NotificationPreferencesMo
                   });
                 },
               ),
+              SwitchListTile(
+                activeColor: AppColors.grayscale00,
+                inactiveTrackColor: AppColors.grayscale10,
+                activeTrackColor: AppColors.primary30,
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  'New Orders',
+                  style: AppFonts.headline3(color: AppColors.grayscale90),
+                ),
+                value: _newOrders,
+                onChanged: (value) {
+                  setState(() {
+                    _newOrders = value;
+                  });
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                activeColor: AppColors.grayscale00,
+                inactiveTrackColor: AppColors.grayscale10,
+                activeTrackColor: AppColors.primary30,
+                title: Text(
+                  'Same Location Orders',
+                  style: AppFonts.headline4(color: AppColors.grayscale90),
+                ),
+                value: _sameLocationOrders,
+                onChanged: (value) {
+                  setState(() {
+                    _sameLocationOrders = value;
+                  });
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                activeColor: AppColors.grayscale00,
+                inactiveTrackColor: AppColors.grayscale10,
+                activeTrackColor: AppColors.primary30,
+                title: Text(
+                  'Review Received',
+                  style: AppFonts.headline4(color: AppColors.grayscale90),
+                ),
+                value: _reviewReceived,
+                onChanged: (value) {
+                  setState(() {
+                    _reviewReceived = value;
+                  });
+                },
+              ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: AppFonts.headline4(color: AppColors.error100),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: AppColors.primary40,
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     onPressed: () {
-                      widget.onSave(_newOrders, _sameLocationOrders, _reviewReceived, _muteAll);
+                      widget.onSave(_newOrders, _sameLocationOrders,
+                          _reviewReceived, _muteAll);
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: AppFonts.body1(color: AppColors.grayscale00),
+                    ),
                   ),
                 ],
               ),

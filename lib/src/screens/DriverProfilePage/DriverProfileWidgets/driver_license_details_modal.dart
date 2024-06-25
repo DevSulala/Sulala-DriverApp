@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sulala_driver_app/src/data/colors.dart';
+
+import '../../data/fonts.dart';
 
 class DriverInfoModal extends StatefulWidget {
   final String licenseNumber;
   final String expirationDate;
   final Function(String, String) onSave;
 
-  const DriverInfoModal({super.key, 
+  const DriverInfoModal({
+    super.key,
     required this.licenseNumber,
     required this.expirationDate,
     required this.onSave,
@@ -15,8 +19,11 @@ class DriverInfoModal extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _DriverInfoModalState createState() => _DriverInfoModalState();
 
-  static void show(BuildContext context, String licenseNumber, String expirationDate, Function(String, String) onSave) {
+  static void show(BuildContext context, String licenseNumber,
+      String expirationDate, Function(String, String) onSave) {
     showModalBottomSheet(
+      showDragHandle: true,
+      backgroundColor: AppColors.grayscale00,
       context: context,
       isScrollControlled: true,
       builder: (context) {
@@ -61,40 +68,96 @@ class _DriverInfoModalState extends State<DriverInfoModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Driver Information',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: AppFonts.title4(color: AppColors.grayscale90),
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: _licenseController,
-                decoration: const InputDecoration(
-                  labelText: 'License Number',
+              Text(
+                'License Number',
+                style: AppFonts.caption2(color: AppColors.grayscale90),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary30, // Outline color
+                  ),
+                  color: Colors.white, // Background color
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: _licenseController,
+                    style: AppFonts.caption2(color: AppColors.grayscale90),
+                    decoration: InputDecoration(
+                      hintStyle: AppFonts.body1(color: AppColors.grayscale50),
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: _expirationController,
-                decoration: const InputDecoration(
-                  labelText: 'Expiration Date',
+              Text(
+                'Expiration Date',
+                style: AppFonts.caption2(color: AppColors.grayscale90),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(50.0), // Adjust border radius here
+                  border: Border.all(
+                    color: AppColors.primary30, // Outline color
+                  ),
+                  color: Colors.white, // Background color
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    controller: _expirationController,
+                    style: AppFonts.caption2(color: AppColors.grayscale90),
+                    decoration: InputDecoration(
+                      hintStyle: AppFonts.body1(color: AppColors.grayscale50),
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancel'),
+                    child: Text(
+                      'Cancel',
+                      style: AppFonts.headline4(color: AppColors.error100),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: AppColors.primary40,
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
                     onPressed: () {
-                      widget.onSave(_licenseController.text, _expirationController.text);
+                      widget.onSave(
+                          _licenseController.text, _expirationController.text);
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(
+                      'Save',
+                      style: AppFonts.body1(color: AppColors.grayscale00),
+                    ),
                   ),
                 ],
               ),
