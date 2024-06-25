@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'src/screens/driver_bottom_navigation.dart';
+import 'src/screens/DriverAccountInformation/driver_information_input.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: MainPage(),
+      home: DriverInfoInput(),
     );
   }
 }

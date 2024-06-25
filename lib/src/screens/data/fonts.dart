@@ -96,7 +96,9 @@ class AppFonts {
   }
 
   // Body
-  static TextStyle body1({required Color color}) {
+  static TextStyle body1({
+    required Color color,
+  }) {
     return GoogleFonts.ibmPlexSans(
       fontSize: widthFactor(14),
       fontWeight: FontWeight.w500,
