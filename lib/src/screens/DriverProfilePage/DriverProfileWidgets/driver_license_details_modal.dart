@@ -72,10 +72,10 @@ class _DriverInfoModalState extends State<DriverInfoModal> {
                 'Driver Information',
                 style: AppFonts.title4(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 25),
               Text(
                 'License Number',
-                style: AppFonts.caption2(color: AppColors.grayscale90),
+                style: AppFonts.headline4(color: AppColors.grayscale90),
               ),
               const SizedBox(height: 5),
               Container(
@@ -102,7 +102,7 @@ class _DriverInfoModalState extends State<DriverInfoModal> {
               const SizedBox(height: 10),
               Text(
                 'Expiration Date',
-                style: AppFonts.caption2(color: AppColors.grayscale90),
+                style: AppFonts.headline4(color: AppColors.grayscale90),
               ),
               const SizedBox(height: 5),
               Container(

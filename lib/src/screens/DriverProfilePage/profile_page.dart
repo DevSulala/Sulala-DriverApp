@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
+import 'package:sulala_driver_app/src/screens/ShimmerWidgets/profile_page_shimmer.dart';
 
 import '../data/fonts.dart';
 import 'DriverProfileWidgets/driver_availability_modal.dart';
@@ -7,6 +10,10 @@ import 'DriverProfileWidgets/driver_language_modal.dart';
 import 'DriverProfileWidgets/driver_license_details_modal.dart';
 import 'DriverProfileWidgets/driver_notification_modal.dart';
 import 'DriverProfileWidgets/driver_vehicle_info_modal.dart';
+import 'DriverProfileWidgets/edit_email_modal.dart';
+import 'DriverProfileWidgets/edit_name_modal.dart';
+import 'DriverProfileWidgets/edit_phone_number_modal.dart';
+import 'DriverProfileWidgets/edit_profile_picture_modal.dart';
 
 class DriverProfilePage extends StatefulWidget {
   const DriverProfilePage({super.key});
@@ -26,7 +33,12 @@ class _DriverProfilePageState extends State<DriverProfilePage> {
   bool _sameLocationOrders = true;
   bool _reviewReceived = true;
   bool _muteAll = false;
-  final TextEditingController _licenseController = TextEditingController();
+  String _name = 'John Doe';
+
+  String _phoneNumber = '+123456';
+
+  String _email = 'john.doe@example.com';
+  File? _profileImage;
   final List<String> _vehicles = [
     'Toyota Prius 2020',
     'Honda Accord 2021',
@@ -35,11 +47,15 @@ class _DriverProfilePageState extends State<DriverProfilePage> {
   final List<String> _timeSlots = ['7am - 3pm', '3pm - 11pm', '11pm - 7am'];
   String _selectedLanguage = 'English';
   final List<String> _languages = ['English', 'Arabic'];
-
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
-    _licenseController.text = _licenseNumber;
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -74,402 +90,438 @@ class _DriverProfilePageState extends State<DriverProfilePage> {
         surfaceTintColor: AppColors.grayscale00,
         backgroundColor: AppColors.grayscale00,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile Picture and Personal Information
-            Center(
+      body: _isLoading
+          ? const ShimmerEffectWidget()
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage(
-                        'assets/Marketplace/sulala_logo_fill.png'), // Placeholder image
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'John Doe',
-                    style: AppFonts.title4(color: AppColors.grayscale90),
-                  ),
-                  Text(
-                    'john.doe@example.com',
-                    style: AppFonts.body2(color: AppColors.grayscale70),
-                  ),
-                  Text(
-                    'Phone: +1234567890',
-                    style: AppFonts.body2(color: AppColors.grayscale70),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-
-            Container(
-              height: 70,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF9F5EC),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.grayscale10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  // Profile Picture and Personal Information
+                  Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '4.5',
-                              style:
-                                  AppFonts.body1(color: AppColors.grayscale90),
-                            ),
-                            const Icon(
-                              Icons.star,
-                              size: 15,
-                              color: AppColors.primary30,
-                            ),
-                          ],
+                        EditProfilePictureWidget(
+                          profileImage: _profileImage,
+                          onImageSelected: (newImage) {
+                            setState(() {
+                              _profileImage = newImage;
+                            });
+                          },
                         ),
-                        const SizedBox(
-                          height: 5,
+                        const SizedBox(height: 10),
+                        EditNameWidget(
+                          name: _name,
+                          onSave: (newName) {
+                            setState(() {
+                              _name = newName;
+                            });
+                          },
                         ),
-                        Text(
-                          'Ratings',
-                          style: AppFonts.body2(color: AppColors.grayscale90),
+                        EditEmailWidget(
+                          email: _email,
+                          onSave: (newEmail) {
+                            setState(() {
+                              _email = newEmail;
+                            });
+                          },
+                        ),
+                        EditPhoneNumberWidget(
+                          phoneNumber: _phoneNumber,
+                          onSave: (newPhoneNumber) {
+                            setState(() {
+                              _phoneNumber = newPhoneNumber;
+                            });
+                          },
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
                   Container(
-                    height: 30,
-                    width: 1,
-                    color: AppColors.grayscale30,
+                    height: 70,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF9F5EC),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: AppColors.grayscale10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '4.5',
+                                    style: AppFonts.body1(
+                                        color: AppColors.grayscale90),
+                                  ),
+                                  const Icon(
+                                    Icons.star,
+                                    size: 15,
+                                    color: AppColors.primary30,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                'Ratings',
+                                style: AppFonts.body2(
+                                    color: AppColors.grayscale90),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 30,
+                          width: 1,
+                          color: AppColors.grayscale30,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '98%',
+                              style:
+                                  AppFonts.body1(color: AppColors.grayscale90),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Success Rate',
+                              style:
+                                  AppFonts.body2(color: AppColors.grayscale90),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '98%',
-                        style: AppFonts.body1(color: AppColors.grayscale90),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Success Rate',
-                        style: AppFonts.body2(color: AppColors.grayscale90),
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 10,
                   ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: AppColors.grayscale20),
+                      color: AppColors.grayscale0,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Availability',
+                            style:
+                                AppFonts.title5(color: AppColors.grayscale90),
+                          ),
+                          const SizedBox(height: 5),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.work_history_outlined,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Current Status ',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  _currentStatus,
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const SizedBox(width: 5),
+                                _statusIndicator(_currentStatus),
+                              ],
+                            ),
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            onTap: () {
+                              AvailabilityModal.show(
+                                context,
+                                _selectedTimeSlot,
+                                _timeSlots,
+                                (newTimeSlot, currentStatus) {
+                                  setState(() {
+                                    _selectedTimeSlot = newTimeSlot;
+                                    _currentStatus = currentStatus;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: AppColors.grayscale20),
+                      color: AppColors.grayscale0,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Driver Information',
+                            style:
+                                AppFonts.title5(color: AppColors.grayscale90),
+                          ),
+                          const SizedBox(height: 10),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.card_membership,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  'License Number',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  ' $_licenseNumber',
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                  'Expiration Date ',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  _expirationDate,
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              DriverInfoModal.show(
+                                context,
+                                _licenseNumber,
+                                _expirationDate,
+                                (newLicenseNumber, newExpirationDate) {
+                                  setState(() {
+                                    _licenseNumber = newLicenseNumber;
+                                    _expirationDate = newExpirationDate;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.directions_car,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Vehicle ',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  _selectedVehicle,
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                  'Registration ',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  _registrationNumber,
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              VehicleInfoModal.show(
+                                context,
+                                _selectedVehicle,
+                                _registrationNumber,
+                                _vehicles,
+                                (newVehicle, newRegistration) {
+                                  setState(() {
+                                    _selectedVehicle = newVehicle;
+                                    _registrationNumber = newRegistration;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: AppColors.grayscale20),
+                      color: AppColors.grayscale0,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Settings',
+                            style:
+                                AppFonts.title5(color: AppColors.grayscale90),
+                          ),
+                          const SizedBox(height: 10),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.notifications_active_outlined,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            title: Text(
+                              'Notification Preferences',
+                              style:
+                                  AppFonts.body1(color: AppColors.grayscale90),
+                            ),
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            onTap: () {
+                              NotificationPreferencesModal.show(
+                                context,
+                                _newOrders,
+                                _sameLocationOrders,
+                                _reviewReceived,
+                                _muteAll,
+                                (newOrders, sameLocationOrders, reviewReceived,
+                                    muteAll) {
+                                  setState(() {
+                                    _newOrders = newOrders;
+                                    _sameLocationOrders = sameLocationOrders;
+                                    _reviewReceived = reviewReceived;
+                                    _muteAll = muteAll;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(
+                              Icons.language,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Language and Region ',
+                                  style: AppFonts.body1(
+                                      color: AppColors.grayscale90),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  _selectedLanguage,
+                                  style: AppFonts.body2(
+                                      color: AppColors.grayscale90),
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              size: 25,
+                              color: AppColors.primary30,
+                            ),
+                            onTap: () {
+                              LanguageAndRegionModal.show(
+                                context,
+                                _selectedLanguage,
+                                _languages,
+                                (newLanguage) {
+                                  setState(() {
+                                    _selectedLanguage = newLanguage;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Support and Help
                 ],
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(color: AppColors.grayscale20),
-                color: AppColors.grayscale0,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Availability',
-                      style: AppFonts.title5(color: AppColors.grayscale90),
-                    ),
-                    const SizedBox(height: 5),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(
-                        Icons.work_history_outlined,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      title: Row(
-                        children: [
-                          Text(
-                            'Current Status ',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _currentStatus,
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                          const SizedBox(width: 5),
-                          _statusIndicator(_currentStatus),
-                        ],
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      onTap: () {
-                        AvailabilityModal.show(
-                          context,
-                          _selectedTimeSlot,
-                          _timeSlots,
-                          (newTimeSlot, currentStatus) {
-                            setState(() {
-                              _selectedTimeSlot = newTimeSlot;
-                              _currentStatus = currentStatus;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(color: AppColors.grayscale20),
-                color: AppColors.grayscale0,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Driver Information',
-                      style: AppFonts.title5(color: AppColors.grayscale90),
-                    ),
-                    const SizedBox(height: 10),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(
-                        Icons.card_membership,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      title: Row(
-                        children: [
-                          Text(
-                            'License Number',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            ' $_licenseNumber',
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                        ],
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            'Expiration Date ',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _expirationDate,
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        DriverInfoModal.show(
-                          context,
-                          _licenseNumber,
-                          _expirationDate,
-                          (newLicenseNumber, newExpirationDate) {
-                            setState(() {
-                              _licenseNumber = newLicenseNumber;
-                              _expirationDate = newExpirationDate;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(
-                        Icons.directions_car,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      title: Row(
-                        children: [
-                          Text(
-                            'Vehicle ',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _selectedVehicle,
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                        ],
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            'Registration ',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _registrationNumber,
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        VehicleInfoModal.show(
-                          context,
-                          _selectedVehicle,
-                          _registrationNumber,
-                          _vehicles,
-                          (newVehicle, newRegistration) {
-                            setState(() {
-                              _selectedVehicle = newVehicle;
-                              _registrationNumber = newRegistration;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(color: AppColors.grayscale20),
-                color: AppColors.grayscale0,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Settings',
-                      style: AppFonts.title5(color: AppColors.grayscale90),
-                    ),
-                    const SizedBox(height: 10),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(
-                        Icons.notifications_active_outlined,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      title: Text(
-                        'Notification Preferences',
-                        style: AppFonts.body1(color: AppColors.grayscale90),
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      onTap: () {
-                        NotificationPreferencesModal.show(
-                          context,
-                          _newOrders,
-                          _sameLocationOrders,
-                          _reviewReceived,
-                          _muteAll,
-                          (newOrders, sameLocationOrders, reviewReceived,
-                              muteAll) {
-                            setState(() {
-                              _newOrders = newOrders;
-                              _sameLocationOrders = sameLocationOrders;
-                              _reviewReceived = reviewReceived;
-                              _muteAll = muteAll;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(
-                        Icons.language,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      title: Row(
-                        children: [
-                          Text(
-                            'Language and Region ',
-                            style: AppFonts.body1(color: AppColors.grayscale90),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _selectedLanguage,
-                            style: AppFonts.body2(color: AppColors.grayscale90),
-                          ),
-                        ],
-                      ),
-                      trailing: const Icon(
-                        Icons.chevron_right,
-                        size: 25,
-                        color: AppColors.primary30,
-                      ),
-                      onTap: () {
-                        LanguageAndRegionModal.show(
-                          context,
-                          _selectedLanguage,
-                          _languages,
-                          (newLanguage) {
-                            setState(() {
-                              _selectedLanguage = newLanguage;
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Support and Help
-          ],
-        ),
-      ),
     );
   }
 

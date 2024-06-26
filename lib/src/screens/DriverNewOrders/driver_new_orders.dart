@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sulala_driver_app/src/screens/ShimmerWidgets/orders_page_shimmer.dart';
 
 import '../../data/colors.dart';
 import '../../data/dummy_data.dart';
@@ -17,196 +18,83 @@ class DriverNewOrders extends StatefulWidget {
 
 class _DriverNewOrdersState extends State<DriverNewOrders> {
   bool _isDialogShown = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Simulate a network request or data loading
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkForOrdersWithSameAddress();
+      _isLoading
+          ? const ShimmerEffectOrdersWidget()
+          : _checkForOrdersWithSameAddress();
     });
-    return Scrollbar(
-      radius: const Radius.circular(20),
-      thickness: 3,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text('New Orders',
-                        style: AppFonts.title4(color: AppColors.grayscale90)),
-                  ),
-                  Expanded(
-                    flex: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.white,
-                          showDragHandle: true,
-                          isScrollControlled:
-                              true, // Set to true to allow the bottom sheet to occupy full screen height
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height *
-                                  0.8, // Adjust height as needed
-                              child: const FilterNewOrdersModal(
-                                showPaymentStatusFilter: false,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.filter_list,
-                            color: AppColors.primary50,
-                          ),
-                          Text(
-                            'Filters',
-                            style: AppFonts.body1(color: AppColors.primary40),
-                          ),
-                        ],
-                      ),
+    return Scaffold(
+      backgroundColor: AppColors.grayscale00,
+      body: _isLoading
+          ? const ShimmerEffectOrdersWidget()
+          : Scrollbar(
+              radius: const Radius.circular(20),
+              thickness: 3,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 2, // Adjust aspect ratio as needed
-              ),
-              itemCount: driverNewOrderList.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final neworder = driverNewOrderList[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OrderDetailsPage(order: neworder),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(color: AppColors.grayscale20),
-                        color: AppColors.grayscale00,
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Expanded(
                             flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Text('New Orders',
+                                style: AppFonts.title4(
+                                    color: AppColors.grayscale90)),
+                          ),
+                          Expanded(
+                            flex: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  backgroundColor: Colors.white,
+                                  showDragHandle: true,
+                                  isScrollControlled:
+                                      true, // Set to true to allow the bottom sheet to occupy full screen height
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.8, // Adjust height as needed
+                                      child: const FilterNewOrdersModal(
+                                        showPaymentStatusFilter: false,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              child: Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        neworder.deliveryslot,
-                                        style: AppFonts.title4(
-                                            color: AppColors.primary50),
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        neworder.deliverydate,
-                                        style: AppFonts.headline4(
-                                            color: AppColors.grayscale90),
-                                      ),
-                                    ],
+                                  const Icon(
+                                    Icons.filter_list,
+                                    color: AppColors.primary50,
                                   ),
-                                  const SizedBox(height: 10),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                size: 20,
-                                                Icons.person,
-                                                color: AppColors.grayscale70,
-                                              ),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                neworder.customername,
-                                                style: AppFonts.headline4(
-                                                    color:
-                                                        AppColors.grayscale70),
-                                              ),
-                                              const SizedBox(width: 3),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          DriverOrderStatusChip(
-                                            status: neworder.status,
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Icon(
-                                            size: 20,
-                                            Icons.location_on_outlined,
-                                            color: AppColors.grayscale60,
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            neworder.customeraddress,
-                                            style: AppFonts.headline4(
-                                                color: AppColors.grayscale60),
-                                          ),
-                                          const SizedBox(width: 3),
-                                        ],
-                                      ),
-                                    ],
+                                  Text(
+                                    'Filters',
+                                    style: AppFonts.body1(
+                                        color: AppColors.primary40),
                                   ),
-                                  const SizedBox(width: 3),
-                                  const Spacer(),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        neworder.shopname,
-                                        style: AppFonts.headline3(
-                                            color: AppColors.grayscale90),
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        neworder.ordernumber,
-                                        style: AppFonts.body1(
-                                            color: AppColors.grayscale90),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 3),
                                 ],
                               ),
                             ),
@@ -214,13 +102,161 @@ class _DriverNewOrdersState extends State<DriverNewOrders> {
                         ],
                       ),
                     ),
-                  ),
-                );
-              },
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        childAspectRatio: 2, // Adjust aspect ratio as needed
+                      ),
+                      itemCount: driverNewOrderList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final neworder = driverNewOrderList[index];
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    OrderDetailsPage(order: neworder),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                border:
+                                    Border.all(color: AppColors.grayscale20),
+                                color: AppColors.grayscale00,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                neworder.deliveryslot,
+                                                style: AppFonts.title4(
+                                                    color: AppColors.primary50),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                neworder.deliverydate,
+                                                style: AppFonts.headline4(
+                                                    color:
+                                                        AppColors.grayscale90),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Icon(
+                                                        size: 20,
+                                                        Icons.person,
+                                                        color: AppColors
+                                                            .grayscale70,
+                                                      ),
+                                                      const SizedBox(width: 5),
+                                                      Text(
+                                                        neworder.customername,
+                                                        style: AppFonts.headline4(
+                                                            color: AppColors
+                                                                .grayscale70),
+                                                      ),
+                                                      const SizedBox(width: 3),
+                                                    ],
+                                                  ),
+                                                  const Spacer(),
+                                                  DriverOrderStatusChip(
+                                                    status: neworder.status,
+                                                  )
+                                                ],
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                    size: 20,
+                                                    Icons.location_on_outlined,
+                                                    color:
+                                                        AppColors.grayscale60,
+                                                  ),
+                                                  const SizedBox(width: 5),
+                                                  Text(
+                                                    neworder.customeraddress,
+                                                    style: AppFonts.headline4(
+                                                        color: AppColors
+                                                            .grayscale60),
+                                                  ),
+                                                  const SizedBox(width: 3),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 3),
+                                          const Spacer(),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                neworder.shopname,
+                                                style: AppFonts.headline3(
+                                                    color:
+                                                        AppColors.grayscale90),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                neworder.ordernumber,
+                                                style: AppFonts.body1(
+                                                    color:
+                                                        AppColors.grayscale90),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 3),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 

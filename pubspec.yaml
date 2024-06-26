@@ -50,6 +50,7 @@ dependencies:
   easy_autocomplete: ^1.6.0
   flutter_riverpod: ^2.5.1
   get: ^4.6.6
+  shimmer: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

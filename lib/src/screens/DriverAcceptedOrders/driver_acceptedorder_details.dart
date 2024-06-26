@@ -107,19 +107,19 @@ class _DriverAcceptedOrderDetailsState
                           children: [
                             Text(
                               'Delivery',
-                              style: AppFonts.headline3(
+                              style: AppFonts.title6(
                                 color: AppColors.grayscale90,
                               ),
                             ),
                             Text(
                               'Time: ${widget.order.deliveryslot}',
-                              style: AppFonts.headline3(
+                              style: AppFonts.title6(
                                 color: AppColors.grayscale70,
                               ),
                             ),
                             Text(
                               widget.order.deliverydate,
-                              style: AppFonts.headline3(
+                              style: AppFonts.title6(
                                 color: AppColors.grayscale70,
                               ),
                             ),
@@ -131,7 +131,7 @@ class _DriverAcceptedOrderDetailsState
                           children: [
                             Text(
                               'Remaining Time',
-                              style: AppFonts.headline3(
+                              style: AppFonts.title6(
                                 color: AppColors.grayscale90,
                               ),
                             ),
@@ -145,7 +145,7 @@ class _DriverAcceptedOrderDetailsState
                                 const SizedBox(width: 5),
                                 Text(
                                   '00:10:39',
-                                  style: AppFonts.headline3(
+                                  style: AppFonts.title6(
                                     color: AppColors.grayscale70,
                                   ),
                                 ),
@@ -165,7 +165,7 @@ class _DriverAcceptedOrderDetailsState
                 ),
                 Text(
                   'Pick Up From Shop',
-                  style: AppFonts.title5(color: AppColors.grayscale70),
+                  style: AppFonts.title6(color: AppColors.grayscale70),
                 ),
                 const SizedBox(
                   height: 5,
@@ -194,7 +194,7 @@ class _DriverAcceptedOrderDetailsState
                                     const SizedBox(width: 5),
                                     Text(
                                       widget.order.shopname,
-                                      style: AppFonts.headline3(
+                                      style: AppFonts.title5(
                                           color: AppColors.grayscale90),
                                     ),
                                   ],
@@ -256,7 +256,7 @@ class _DriverAcceptedOrderDetailsState
                 ),
                 Text(
                   'Delivery Details',
-                  style: AppFonts.title5(color: AppColors.grayscale70),
+                  style: AppFonts.title6(color: AppColors.grayscale70),
                 ),
                 const SizedBox(
                   height: 5,

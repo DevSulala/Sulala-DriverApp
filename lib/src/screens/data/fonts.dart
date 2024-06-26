@@ -58,6 +58,15 @@ class AppFonts {
     );
   }
 
+  static TextStyle title6({required Color color}) {
+    return GoogleFonts.sourceSerif4(
+      fontSize: widthFactor(17),
+      fontWeight: FontWeight.w600,
+      letterSpacing: widthFactor(0),
+      color: color,
+    );
+  }
+
   // Headlines
   static TextStyle headline1({required Color color}) {
     return GoogleFonts.ibmPlexSans(
