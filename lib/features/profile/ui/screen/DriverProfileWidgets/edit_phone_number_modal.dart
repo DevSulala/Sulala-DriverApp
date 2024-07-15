@@ -2,32 +2,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
-import '../../data/fonts.dart';
 
-class EditNameWidget extends StatefulWidget {
-  final String name;
+import '../../../../../src/screens/data/fonts.dart';
+
+class EditPhoneNumberWidget extends StatefulWidget {
+  final String phoneNumber;
   final Function(String) onSave;
 
-  const EditNameWidget({super.key, required this.name, required this.onSave});
+  const EditPhoneNumberWidget(
+      {super.key, required this.phoneNumber, required this.onSave});
 
   @override
-  _EditNameWidgetState createState() => _EditNameWidgetState();
+  _EditPhoneNumberWidgetState createState() => _EditPhoneNumberWidgetState();
 }
 
-class _EditNameWidgetState extends State<EditNameWidget> {
-  late TextEditingController _nameController;
+class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
+  late TextEditingController _phoneNumberController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.name);
+    _phoneNumberController = TextEditingController(text: widget.phoneNumber);
   }
 
-  void _showEditNameModal(BuildContext context) {
+  void _showEditPhoneNumberModal(BuildContext context) {
     showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.grayscale00,
       showDragHandle: true,
+      backgroundColor: AppColors.grayscale00,
+      context: context,
       isScrollControlled: true,
       builder: (context) {
         return Padding(
@@ -42,13 +44,13 @@ class _EditNameWidgetState extends State<EditNameWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Edit Name',
+                    'Edit Phone Number',
                     style: AppFonts.title4(color: AppColors.grayscale90),
                   ),
                   const SizedBox(height: 25),
                   Text(
-                    'Name',
-                    style: AppFonts.headline4(color: AppColors.grayscale70),
+                    'Phone Number',
+                    style: AppFonts.headline4(color: AppColors.grayscale90),
                   ),
                   const SizedBox(height: 5),
                   Container(
@@ -63,8 +65,9 @@ class _EditNameWidgetState extends State<EditNameWidget> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
-                        controller: _nameController,
-                        style: AppFonts.body2(color: AppColors.grayscale90),
+                        keyboardType: const TextInputType.numberWithOptions(),
+                        controller: _phoneNumberController,
+                        style: AppFonts.caption2(color: AppColors.grayscale90),
                         decoration: InputDecoration(
                           hintStyle:
                               AppFonts.body1(color: AppColors.grayscale50),
@@ -97,7 +100,7 @@ class _EditNameWidgetState extends State<EditNameWidget> {
                           ),
                         ),
                         onPressed: () {
-                          widget.onSave(_nameController.text);
+                          widget.onSave(_phoneNumberController.text);
                           Navigator.of(context).pop();
                         },
                         child: Text(
@@ -122,13 +125,13 @@ class _EditNameWidgetState extends State<EditNameWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          widget.name,
-          style: AppFonts.title4(color: AppColors.grayscale90),
+          widget.phoneNumber,
+          style: AppFonts.body2(color: AppColors.grayscale70),
         ),
         const SizedBox(width: 5),
         InkWell(
           onTap: () {
-            _showEditNameModal(context);
+            _showEditPhoneNumberModal(context);
           },
           child: const Icon(
             Icons.edit,

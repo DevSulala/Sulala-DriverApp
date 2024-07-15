@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:sulala_driver_app/src/screens/driver_bottom_navigation.dart';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:sulala_driver_app/src/screens/driver_bottom_navigation.dart';
+
+import '../../../features/profile/ui/screen/DriverProfileWidgets/edit_profile_picture_modal.dart';
 import '../../data/colors.dart';
-import '../DriverProfilePage/DriverProfileWidgets/edit_profile_picture_modal.dart';
 import '../ShimmerWidgets/profile_page_shimmer.dart';
 import '../data/fonts.dart';
 import 'upload_documents_widget.dart';
@@ -168,7 +169,8 @@ class _DriverInfoInputState extends State<DriverInfoInput> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MainPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const DriverBottomNavigation()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

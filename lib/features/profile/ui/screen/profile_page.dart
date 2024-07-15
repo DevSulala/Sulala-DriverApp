@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
 import 'package:sulala_driver_app/src/screens/ShimmerWidgets/profile_page_shimmer.dart';
 
-import '../data/fonts.dart';
+import '../../../../src/screens/data/fonts.dart';
 import 'DriverProfileWidgets/driver_availability_modal.dart';
 import 'DriverProfileWidgets/driver_language_modal.dart';
 import 'DriverProfileWidgets/driver_license_details_modal.dart';

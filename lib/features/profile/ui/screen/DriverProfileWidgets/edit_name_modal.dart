@@ -2,33 +2,33 @@
 
 import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
-import '../../data/fonts.dart';
 
-class EditPhoneNumberWidget extends StatefulWidget {
-  final String phoneNumber;
+import '../../../../../src/screens/data/fonts.dart';
+
+class EditNameWidget extends StatefulWidget {
+  final String name;
   final Function(String) onSave;
 
-  const EditPhoneNumberWidget(
-      {super.key, required this.phoneNumber, required this.onSave});
+  const EditNameWidget({super.key, required this.name, required this.onSave});
 
   @override
-  _EditPhoneNumberWidgetState createState() => _EditPhoneNumberWidgetState();
+  _EditNameWidgetState createState() => _EditNameWidgetState();
 }
 
-class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
-  late TextEditingController _phoneNumberController;
+class _EditNameWidgetState extends State<EditNameWidget> {
+  late TextEditingController _nameController;
 
   @override
   void initState() {
     super.initState();
-    _phoneNumberController = TextEditingController(text: widget.phoneNumber);
+    _nameController = TextEditingController(text: widget.name);
   }
 
-  void _showEditPhoneNumberModal(BuildContext context) {
+  void _showEditNameModal(BuildContext context) {
     showModalBottomSheet(
-      showDragHandle: true,
-      backgroundColor: AppColors.grayscale00,
       context: context,
+      backgroundColor: AppColors.grayscale00,
+      showDragHandle: true,
       isScrollControlled: true,
       builder: (context) {
         return Padding(
@@ -43,13 +43,13 @@ class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Edit Phone Number',
+                    'Edit Name',
                     style: AppFonts.title4(color: AppColors.grayscale90),
                   ),
                   const SizedBox(height: 25),
                   Text(
-                    'Phone Number',
-                    style: AppFonts.headline4(color: AppColors.grayscale90),
+                    'Name',
+                    style: AppFonts.headline4(color: AppColors.grayscale70),
                   ),
                   const SizedBox(height: 5),
                   Container(
@@ -64,9 +64,8 @@ class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
-                        keyboardType: const TextInputType.numberWithOptions(),
-                        controller: _phoneNumberController,
-                        style: AppFonts.caption2(color: AppColors.grayscale90),
+                        controller: _nameController,
+                        style: AppFonts.body2(color: AppColors.grayscale90),
                         decoration: InputDecoration(
                           hintStyle:
                               AppFonts.body1(color: AppColors.grayscale50),
@@ -99,7 +98,7 @@ class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
                           ),
                         ),
                         onPressed: () {
-                          widget.onSave(_phoneNumberController.text);
+                          widget.onSave(_nameController.text);
                           Navigator.of(context).pop();
                         },
                         child: Text(
@@ -124,13 +123,13 @@ class _EditPhoneNumberWidgetState extends State<EditPhoneNumberWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          widget.phoneNumber,
-          style: AppFonts.body2(color: AppColors.grayscale70),
+          widget.name,
+          style: AppFonts.title4(color: AppColors.grayscale90),
         ),
         const SizedBox(width: 5),
         InkWell(
           onTap: () {
-            _showEditPhoneNumberModal(context);
+            _showEditNameModal(context);
           },
           child: const Icon(
             Icons.edit,

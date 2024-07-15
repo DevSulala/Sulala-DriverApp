@@ -2,19 +2,19 @@
 
 import 'package:flutter/material.dart';
 
+import '../../features/profile/ui/screen/profile_page.dart';
 import '../data/colors.dart';
-import 'DriverProfilePage/profile_page.dart';
 import 'data/fonts.dart';
 import 'driver_home_page.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class DriverBottomNavigation extends StatefulWidget {
+  const DriverBottomNavigation({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _DriverBottomNavigationState createState() => _DriverBottomNavigationState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _DriverBottomNavigationState extends State<DriverBottomNavigation> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[

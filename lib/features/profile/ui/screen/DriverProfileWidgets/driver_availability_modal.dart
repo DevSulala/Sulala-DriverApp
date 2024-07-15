@@ -1,42 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:sulala_driver_app/src/data/colors.dart';
 
-import '../../../data/colors.dart';
-import '../../data/fonts.dart';
+import '../../../../../src/screens/data/fonts.dart';
 
-class VehicleInfoModal extends StatefulWidget {
-  final String selectedVehicle;
-  final String registrationNumber;
-  final List<String> vehicles;
+class AvailabilityModal extends StatefulWidget {
+  final String selectedTimeSlot;
+  final List<String> timeSlots;
   final Function(String, String) onSave;
 
-  const VehicleInfoModal({
+  const AvailabilityModal({
     super.key,
-    required this.selectedVehicle,
-    required this.registrationNumber,
-    required this.vehicles,
+    required this.selectedTimeSlot,
+    required this.timeSlots,
     required this.onSave,
   });
 
   @override
   // ignore: library_private_types_in_public_api
-  _VehicleInfoModalState createState() => _VehicleInfoModalState();
+  _AvailabilityModalState createState() => _AvailabilityModalState();
 
-  static void show(
-      BuildContext context,
-      String selectedVehicle,
-      String registrationNumber,
-      List<String> vehicles,
-      Function(String, String) onSave) {
+  static void show(BuildContext context, String selectedTimeSlot,
+      List<String> timeSlots, Function(String, String) onSave) {
     showModalBottomSheet(
-      context: context,
       backgroundColor: AppColors.grayscale00,
       showDragHandle: true,
+      context: context,
       isScrollControlled: true,
       builder: (context) {
-        return VehicleInfoModal(
-          selectedVehicle: selectedVehicle,
-          registrationNumber: registrationNumber,
-          vehicles: vehicles,
+        return AvailabilityModal(
+          selectedTimeSlot: selectedTimeSlot,
+          timeSlots: timeSlots,
           onSave: onSave,
         );
       },
@@ -44,22 +37,13 @@ class VehicleInfoModal extends StatefulWidget {
   }
 }
 
-class _VehicleInfoModalState extends State<VehicleInfoModal> {
-  late TextEditingController _registrationController;
-  late String _selectedVehicle;
+class _AvailabilityModalState extends State<AvailabilityModal> {
+  late String _selectedTimeSlot;
 
   @override
   void initState() {
     super.initState();
-    _selectedVehicle = widget.selectedVehicle;
-    _registrationController =
-        TextEditingController(text: widget.registrationNumber);
-  }
-
-  @override
-  void dispose() {
-    _registrationController.dispose();
-    super.dispose();
+    _selectedTimeSlot = widget.selectedTimeSlot;
   }
 
   @override
@@ -76,13 +60,13 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Vehicle Information',
+                'Select Your Shift',
                 style: AppFonts.title4(color: AppColors.grayscale90),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               Text(
-                'Select Vehicle',
-                style: AppFonts.caption1(color: AppColors.grayscale70),
+                'Shift Timings',
+                style: AppFonts.headline4(color: AppColors.grayscale70),
               ),
               const SizedBox(height: 5),
               Container(
@@ -97,51 +81,23 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<String>(
                   dropdownColor: AppColors.grayscale00,
-                  value: _selectedVehicle,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  items: widget.vehicles.map((vehicle) {
+                  value: _selectedTimeSlot,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  items: widget.timeSlots.map((slot) {
                     return DropdownMenuItem<String>(
-                      value: vehicle,
+                      value: slot,
                       child: Text(
-                        vehicle,
+                        slot,
                         style: AppFonts.headline4(color: AppColors.grayscale70),
                       ),
                     );
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _selectedVehicle = value!;
+                      _selectedTimeSlot = value!;
+                      _updateCurrentStatus();
                     });
                   },
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Registration Number',
-                style: AppFonts.caption2(color: AppColors.grayscale90),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(50.0), // Adjust border radius here
-                  border: Border.all(
-                    color: AppColors.primary30, // Outline color
-                  ),
-                  color: Colors.white, // Background color
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextField(
-                    controller: _registrationController,
-                    style: AppFonts.headline4(color: AppColors.grayscale70),
-                    decoration: InputDecoration(
-                      hintStyle: AppFonts.body1(color: AppColors.grayscale50),
-                      border: InputBorder.none,
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -168,8 +124,7 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onSave(
-                          _selectedVehicle, _registrationController.text);
+                      widget.onSave(_selectedTimeSlot, _currentStatus());
                       Navigator.of(context).pop();
                     },
                     child: Text(
@@ -184,5 +139,37 @@ class _VehicleInfoModalState extends State<VehicleInfoModal> {
         ),
       ),
     );
+  }
+
+  void _updateCurrentStatus() {
+    // This method can be used to update the state based on the selected time slot
+  }
+
+  String _currentStatus() {
+    final now = TimeOfDay.now();
+    final selectedRange = _selectedTimeSlot.split(' - ');
+    final startTime = _parseTime(selectedRange[0]);
+    final endTime = _parseTime(selectedRange[1]);
+
+    if ((now.hour >= startTime.hour && now.minute >= startTime.minute) &&
+        (now.hour < endTime.hour ||
+            (now.hour == endTime.hour && now.minute <= endTime.minute))) {
+      return 'Online';
+    } else {
+      return 'Offline';
+    }
+  }
+
+  TimeOfDay _parseTime(String time) {
+    final period = time.substring(time.length - 2).toLowerCase();
+    final parts =
+        time.substring(0, time.length - 2).split(':').map(int.parse).toList();
+    if (period == 'pm' && parts[0] != 12) {
+      parts[0] += 12;
+    }
+    if (period == 'am' && parts[0] == 12) {
+      parts[0] = 0;
+    }
+    return TimeOfDay(hour: parts[0], minute: parts.length > 1 ? parts[1] : 0);
   }
 }

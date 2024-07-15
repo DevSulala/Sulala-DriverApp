@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/colors.dart';
-import '../../data/fonts.dart';
+import '../../../../../src/data/colors.dart';
+import '../../../../../src/screens/data/fonts.dart';
 
 class NotificationPreferencesModal extends StatefulWidget {
   final bool newOrders;

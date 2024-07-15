@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
 
-import '../../data/fonts.dart';
+import '../../../../../src/screens/data/fonts.dart';
 
 class DriverInfoModal extends StatefulWidget {
   final String licenseNumber;

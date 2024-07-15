@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:sulala_driver_app/src/data/colors.dart';
-import '../../data/fonts.dart';
+
+import '../../../../../src/screens/data/fonts.dart';
 
 class EditEmailWidget extends StatefulWidget {
   final String email;
