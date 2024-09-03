@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
+
 import '../data/colors.dart';
 import 'DriverAcceptedOrders/driver_accepted_orders.dart';
 import 'DriverDeliveredOrders/driver_delivered_orders.dart';
 import 'DriverNewOrders/driver_new_orders.dart';
 import 'Widgets/driver_accounts_modal.dart';
-
 import 'data/fonts.dart';
-import 'package:get/get.dart';
-
 import 'driver_customer_support.dart';
 
 // ignore: must_be_immutable
@@ -28,7 +27,7 @@ class _DriverHomePageState extends ConsumerState<DriverHomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
